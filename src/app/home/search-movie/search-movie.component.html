@@ -13,6 +13,7 @@
           size="30"
           pInputText
           formControlName="title"
+          [ngClass]="{ 'is-invalid': searchObj && form.title.errors }"
         />
         <label for="title-input">Title *</label>
       </span>

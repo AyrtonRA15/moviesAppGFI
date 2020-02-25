@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from '../../../_services';
+import { Store } from '@ngrx/store';
 import { first } from 'rxjs/operators';
+
+import * as movieActions from '../../../_redux/actions/movie.actions';
+import * as fromMovie from '../../../_redux/reducers/movie.reducer';
+import { AuthenticationService } from '../../../_services';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +24,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private store$: Store<fromMovie.State>
   ) {
     // Redireccionar al inicio si el usuario ya se encuentra logueado
     if (this.authenticationService.currentUserValue) {
@@ -37,7 +42,9 @@ export class LoginComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  get form() { return this.loginForm.controls; }
+  get form() {
+    return this.loginForm.controls;
+  }
 
   onSubmit() {
     this.submitted = true;
@@ -48,16 +55,19 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.form.username.value, this.form.password.value)
+    this.authenticationService
+      .login(this.form.username.value, this.form.password.value)
       .pipe(first())
       .subscribe(
         data => {
           this.router.navigate([this.returnUrl]);
+          this.store$.dispatch(new movieActions.LoadFavorites());
         },
         error => {
           this.error = error;
           this.loading = false;
           this.submitted = false;
-        });
+        }
+      );
   }
 }

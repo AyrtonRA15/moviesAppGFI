@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import * as AppActions from './_redux/actions/app.actions';
-import * as movieActions from './_redux/actions/movie.actions';
 import * as fromMovie from './_redux/reducers/movie.reducer';
 import { AuthenticationService } from './_services';
 
@@ -12,7 +11,7 @@ import { AuthenticationService } from './_services';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   currentUser: any;
 
   constructor(
@@ -23,10 +22,6 @@ export class AppComponent implements OnInit {
     this.authenticationService.currentUser.subscribe(
       x => (this.currentUser = x)
     );
-  }
-
-  ngOnInit() {
-    this.store$.dispatch(new movieActions.LoadFavorites());
   }
 
   logout() {
