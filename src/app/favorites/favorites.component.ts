@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-
-import * as fromMovie from '../_redux/reducers/movie.reducer';
-import * as movieActions from '../_redux/actions/movie.actions';
 import { Observable, Subscription } from 'rxjs';
+
 import { IMovie } from '../_interfaces/movie.interface';
+import * as movieActions from '../_redux/actions/movie.actions';
+import * as fromMovie from '../_redux/reducers/movie.reducer';
 
 @Component({
   selector: 'app-favorites',
@@ -19,22 +19,20 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   public subscriptions: Subscription[] = [];
 
   constructor(private store$: Store<fromMovie.State>) {
-    this.favorites$ = this.store$
-      .select(fromMovie.getFavoriteMoviesSelector);
-    this.movie$ = this.store$
-      .select(fromMovie.getSelectedMovieSelector);
+    this.favorites$ = this.store$.select(fromMovie.getFavoriteMoviesSelector);
+    this.movie$ = this.store$.select(fromMovie.getSelectedMovieSelector);
   }
 
   ngOnInit() {
-    this.store$.dispatch(
-      new movieActions.LoadFavorites()
+    this.subscriptions.push(
+      this.favorites$.subscribe(movies => (this.movies = movies))
     );
 
-    this.subscriptions.push(this.favorites$.subscribe(movies => this.movies = movies));
-
-    this.subscriptions.push(this.movie$.subscribe((movie: IMovie) => {
-      this.selectedMovie = movie;
-    }));
+    this.subscriptions.push(
+      this.movie$.subscribe((movie: IMovie) => {
+        this.selectedMovie = movie;
+      })
+    );
   }
 
   ngOnDestroy() {
@@ -42,15 +40,10 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   }
 
   selectMovie(imdbID: string) {
-    this.store$.dispatch(
-      new movieActions.LoadMovie(imdbID)
-    );
+    this.store$.dispatch(new movieActions.LoadMovie(imdbID));
   }
 
   removeFromFavorites(movie: IMovie) {
-    this.store$.dispatch(
-      new movieActions.RemoveFavorite(movie)
-    );
+    this.store$.dispatch(new movieActions.RemoveFavorite(movie));
   }
-
 }

@@ -1,22 +1,17 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromMovie from '../_redux/reducers/movie.reducer';
-import * as AppActions from '../_redux/actions/app.actions';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnDestroy {
+export class HomeComponent {
   public searchMode = false;
 
-  constructor(private store$: Store<fromMovie.State>) { }
-
-  ngOnDestroy() {
-    this.store$.dispatch(new AppActions.ClearState());
-  }
+  constructor(private store$: Store<fromMovie.State>) {}
 
   openSearchMode() {
     this.searchMode = true;
