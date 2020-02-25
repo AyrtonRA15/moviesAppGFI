@@ -1,0 +1,24 @@
+.form-container {
+  height: calc(100vh - 96px);
+
+  .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+  
+    .form-control:focus {
+        z-index: 2;
+    }
+  
+    .ui-button-rounded {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .info-container {
+      position: absolute;
+      width: 300px;
+    }
+  }
+}

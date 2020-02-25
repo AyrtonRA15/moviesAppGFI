@@ -1,0 +1,66 @@
+<p-panel [style]="{'text-align':'center'}">
+    <p-header [pTooltip]="movie.Title" tooltipPosition="top">{{ movie.Title }}</p-header>
+
+    <div *ngIf="movie.Poster && movie.Poster !== 'N/A'; then showImage else showGeneric"></div>
+    <ng-template #showImage><img [src]="movie.Poster" width="120" height="178"></ng-template>
+    <ng-template #showGeneric>
+        <div class="no-poster-list d-table-cell align-middle">N/A</div>
+    </ng-template>
+
+    <div class="movie-year">{{movie.Year}}</div>
+    <hr class="ui-widget-content" style="border-top:0">
+    <div class="d-flex flex-row">
+        <button pButton type="button" icon="pi pi-search" (click)="selectMovie($event, movie)" class="mr-auto"
+            pTooltip="Show detail" tooltipPosition="top" showDelay="1000"></button>
+        <button *ngIf="!movie.isFavorite" pButton type="button" icon="pi pi-heart"
+            (click)="addToFavorites($event, movie)" class="ui-button-secondary ml-auto" pTooltip="Add to favorites"
+            tooltipPosition="top" showDelay="1000"></button>
+        <button *ngIf="movie.isFavorite" pButton type="button" icon="pi pi-heart"
+            (click)="removeFromFavorites($event, movie)" class="ui-button-secondary ml-auto remove"
+            pTooltip="Remove from favorites" tooltipPosition="top" showDelay="1000"></button>
+    </div>
+</p-panel>
+
+<p-dialog header="Movie Details" [(visible)]="displayDialog" showEffect="fade" [modal]="true" [style]="{width: '50vw'}">
+    <div class="ui-g" *ngIf="detailedMovie">
+        <div class="ui-g-4" style="text-align:center">
+            <div *ngIf="detailedMovie.Poster && detailedMovie.Poster !== 'N/A'; then showImage else showGeneric"></div>
+            <ng-template #showImage><img [src]="detailedMovie.Poster" width="200" height="298"></ng-template>
+            <ng-template #showGeneric>
+                <div class="no-poster-detail d-table mx-auto">
+                    <span class="d-table-cell align-middle">N/A</span>
+                </div>
+            </ng-template>
+        </div>
+        <div class="ui-g-8 text-left">
+            <div class="ui-g-2 font-weight-bold">Title: </div>
+            <div class="ui-g-10">{{detailedMovie.Title}}</div>
+
+            <div class="ui-g-2 font-weight-bold">Year: </div>
+            <div class="ui-g-10">{{detailedMovie.Year}}</div>
+
+            <div class="ui-g-2 font-weight-bold">Genre: </div>
+            <div class="ui-g-10">{{detailedMovie.Genre}}</div>
+
+            <div class="ui-g-2 font-weight-bold">Actors: </div>
+            <div class="ui-g-10">{{detailedMovie.Actors}}</div>
+
+            <div class="ui-g-2 font-weight-bold">Country: </div>
+            <div class="ui-g-10">{{detailedMovie.Country}}</div>
+
+            <div class="ui-g-2 font-weight-bold">Language: </div>
+            <div class="ui-g-10">{{detailedMovie.Language}}</div>
+
+            <div class="ui-g-12"></div>
+
+            <p-fieldset legend="Plot" [toggleable]="true" class="text-justify">
+                {{detailedMovie.Plot}}
+            </p-fieldset>
+        </div>
+    </div>
+    <div *ngIf="!detailedMovie">
+        <i class="pi pi-spin pi-spinner" style="font-size: 3em"></i>
+    </div>
+</p-dialog>
+
+<p-toast position="bottom-right"></p-toast>

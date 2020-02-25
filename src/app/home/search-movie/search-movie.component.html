@@ -1,0 +1,28 @@
+<div class="search-container">
+    <div class="search-header pb-4">
+        <form action="" [formGroup]="searchForm" (ngSubmit)="onSearch()" class="d-flex flex-row">
+            <span class="ui-float-label mr-3 ml-auto">
+                <input id="title-input" type="text" size="30" pInputText formControlName="title">
+                <label for="title-input">Title *</label>
+            </span>
+            <span class="ui-float-label mr-4">
+                <input id="year-input" type="number" size="10" pInputText formControlName="year">
+                <label for="year-input">Year</label>
+            </span>
+            <button pButton type="submit" label="Search" class="ui-button-rounded mr-auto"></button>
+        </form>
+    </div>
+    <div class="search-results" *ngIf="searchResults">
+        <p-dataView [value]="searchResults.Search" [paginator]="true" [rows]="10" paginatorPosition="both" [lazy]="true"
+            (onLazyLoad)="changePage($event)" [totalRecords]="searchResults.totalResults" layout="grid"
+            [emptyMessage]="errorMessage">
+            <p-header>Search Results</p-header>
+            <ng-template let-movie pTemplate="gridItem">
+                <app-movie-card style="padding:.5em" class="ui-g-12 ui-md-3" [movie]="movie"
+                    [detailedMovie]="selectedMovie" (onMovieSelected)="selectMovie($event)"
+                    (onAddedToFavorites)="addToFavorites($event)"
+                    (onRemovedFromFavorites)="removeFromFavorites($event)"></app-movie-card>
+            </ng-template>
+        </p-dataView>
+    </div>
+</div>

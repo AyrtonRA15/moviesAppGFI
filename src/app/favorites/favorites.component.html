@@ -1,0 +1,9 @@
+<p-dataView [value]="movies" paginatorPosition="both" [totalRecords]="movies.length" layout="grid" class="h-100"
+    emptyMessage="You don't have any favorite movie added yet">
+    <p-header>Favorite Movies</p-header>
+    <ng-template let-movie pTemplate="gridItem">
+        <app-movie-card style="padding:.5em" class="ui-g-12 ui-md-3" [movie]="movie" [detailedMovie]="selectedMovie"
+            (onMovieSelected)="selectMovie($event)" (onRemovedFromFavorites)="removeFromFavorites($event)">
+        </app-movie-card>
+    </ng-template>
+</p-dataView>

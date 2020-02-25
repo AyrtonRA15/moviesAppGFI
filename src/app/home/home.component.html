@@ -1,0 +1,14 @@
+<main role="main" class="inner cover" *ngIf="!searchMode">
+  <h1 class="cover-heading">Welcome!</h1>
+  <p class="lead">
+    This website will help you find any kind of movie, series or episodes you are looking for.
+    You can also add them to favorites so you will keep them handy.
+    <br>
+    Why don't you give it a try?
+  </p>
+  <p class="lead">
+    <a class="btn btn-lg btn-secondary" (click)="openSearchMode()">Let's Start</a>
+  </p>
+</main>
+
+<app-search-movie *ngIf="searchMode"></app-search-movie>

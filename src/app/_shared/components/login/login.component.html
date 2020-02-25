@@ -1,0 +1,28 @@
+<div class="form-container d-flex flex-column">
+    <form class="form-signin text-center p-col" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <img class="mb-4" src="../../../../assets/movies-app-icon.png" alt="" width="150" height="150">
+        <h1 class="h3 mb-4 font-weight-normal">Please sign in</h1>
+        <div class="ui-inputgroup mb-2 w-100">
+            <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
+            <input class="w-100" type="text" pInputText placeholder="Username" formControlName="username"
+                [ngClass]="{ 'is-invalid': submitted && form.username.errors }">
+        </div>
+        <div class="ui-inputgroup mb-5 w-100">
+            <span class="ui-inputgroup-addon"><i class="pi pi-lock"></i></span>
+            <input class="w-100" type="password" pInputText placeholder="Password" formControlName="password"
+                [ngClass]="{ 'is-invalid': submitted && form.password.errors }">
+        </div>
+        <button pButton label="Sign In" class="ui-button-rounded w-100" [disabled]="loading">
+        </button>
+        <div class="mt-4 info-container">
+            <span *ngIf="loading" class="spinner-border spinner-border-md"></span>
+            <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+            <div *ngIf="submitted && form.username.errors" class="alert alert-danger">
+                <div *ngIf="form.username.errors.required">Username is required</div>
+            </div>
+            <div *ngIf="submitted && form.password.errors" class="alert alert-danger">
+                <div *ngIf="form.password.errors.required">Password is required</div>
+            </div>
+        </div>
+    </form>
+</div>
